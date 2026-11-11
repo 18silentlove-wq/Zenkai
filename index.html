@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b13">
+  <meta name="description" content="ZENKAI — discover your next anime adventure.">
+  <title>ZENKAI — Anime Universe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="ZENKAI home"><span class="brand-mark">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <button class="nav-link active" data-view="home">Home</button>
+      <button class="nav-link" data-view="explore">Explore</button>
+      <button class="nav-link" data-view="watchlist">My List <span id="listCount" class="count">0</span></button>
+    </nav>
+    <div class="top-actions">
+      <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search anime..." aria-label="Search anime"><kbd>/</kbd></label>
+      <button class="profile-btn" id="profileBtn" aria-label="Profile">Z</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="live-dot"></span> YOUR NEXT ADVENTURE STARTS HERE</div>
+        <p class="hero-kicker">FEATURED UNIVERSE · 01</p>
+        <h1>Beyond the<br><span>ordinary.</span></h1>
+        <p class="hero-description">Step into stories that stay with you. Discover new worlds, unforgettable characters and your next favourite anime.</p>
+        <div class="hero-actions"><button class="primary-btn" id="exploreBtn">Explore anime <span>↗</span></button><button class="ghost-btn" id="surpriseBtn">Surprise me ✦</button></div>
+        <div class="hero-meta"><span>✦ Curated discoveries</span><span>◈ Your personal list</span></div>
+      </div>
+      <div class="hero-art" role="img" aria-label="Abstract anime-inspired purple and blue cinematic artwork">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="hero-sigil">界</div><div class="hero-stamp">ZENKAI<br><small>ANIME UNIVERSE</small></div>
+        <div class="hero-art-caption"><span>01 / DISCOVER</span><span>NEW WORLDS AWAIT</span></div>
+      </div>
+    </section>
+
+    <section class="content-section" id="catalog">
+      <div class="section-heading"><div><p class="section-kicker">HANDPICKED FOR YOU</p><h2 id="sectionTitle">Trending now<span>.</span></h2></div><button class="text-btn" id="viewAllBtn">View all <span>→</span></button></div>
+      <div class="filters" id="filters">
+        <button class="filter-chip selected" data-genre="All">All anime</button>
+        <button class="filter-chip" data-genre="Action">Action</button>
+        <button class="filter-chip" data-genre="Adventure">Adventure</button>
+        <button class="filter-chip" data-genre="Fantasy">Fantasy</button>
+        <button class="filter-chip" data-genre="Drama">Drama</button>
+        <button class="filter-chip" data-genre="Sci-Fi">Sci-Fi</button>
+      </div>
+      <div class="anime-grid" id="animeGrid" aria-live="polite"></div>
+      <div class="empty-state hidden" id="emptyState"><div class="empty-icon">⌕</div><h3>No anime found</h3><p>Try another title or choose a different genre.</p><button class="ghost-btn" id="resetBtn">Reset filters</button></div>
+    </section>
+
+    <section class="quote-band"><span class="quote-mark">“</span><p>Every great journey begins with a single episode.</p><span class="quote-label">THE ZENKAI WAY</span></section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a><p>A universe of stories. Made for discovery.</p><span class="footer-note">DEMO EXPERIENCE · 2026</span></footer>
+
+  <div class="modal hidden" id="animeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close="true"></div><article class="modal-card"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="modal-art" id="modalArt"></div><div class="modal-info"><p class="section-kicker" id="modalMeta">FEATURED ANIME</p><h2 id="modalTitle"></h2><p id="modalDescription"></p><div class="modal-tags" id="modalTags"></div><div class="modal-buttons"><button class="primary-btn" id="modalWatch">▶ Preview details</button><button class="ghost-btn" id="modalSave">＋ Add to list</button></div><p class="demo-note">Preview interface only. No video stream is hosted here.</p></div></article>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
