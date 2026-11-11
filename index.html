@@ -12,7 +12,7 @@ main{padding:30px 5% 60px}.page-heading{margin-bottom:22px}.eyebrow{color:var(--
 <nav class="categories" aria-label="Anime categories">
 <button class="cat-btn active" data-category="All">ALL ANIME</button><button class="cat-btn" data-category="TRENDING">TRENDING</button><button class="cat-btn" data-category="UPCOMING">UPCOMING</button><button class="cat-btn" data-category="Action">ACTION</button><button class="cat-btn" data-category="Fantasy">FANTASY</button><button class="cat-btn" data-category="Mystery">MYSTERY</button><button class="cat-btn" data-category="Sci-Fi">SCI-FI</button><button class="cat-btn" data-category="Adventure">ADVENTURE</button><button class="cat-btn" data-category="Drama">DRAMA</button><button class="cat-btn" data-category="Romance">ROMANCE</button><button class="cat-btn" data-category="Comedy">COMEDY</button>
 </nav>
-<main><div class="page-heading"><div class="eyebrow">POWERED BY ANILIST</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount">LOADING...</p></div><p class="status" id="status" aria-live="polite">Connecting to AniList...</p><div class="cards" id="animeCards" aria-live="polite"></div></main>
+<main><div class="page-heading"><div class="eyebrow">ONE SOURCE · ANILIST</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount">LOADING...</p></div><p class="status" id="status" aria-live="polite">Connecting to AniList...</p><div class="cards" id="animeCards" aria-live="polite"></div></main>
 <footer><strong>ZENKAI</strong><br><br>ANIME DISCOVERY · DATA VIA ANILIST · © 2026</footer>
 <script>
 const API_URL="https://graphql.anilist.co";
@@ -37,31 +37,39 @@ function render(items){
   card.append(poster,info);card.addEventListener("click",()=>window.open(a.siteUrl,"_blank","noopener"));grid.appendChild(card);
  });
 }
-async function loadJikan(term){
- const genreIds={"Action":1,"Adventure":2,"Comedy":4,"Drama":8,"Fantasy":10,"Mystery":7,"Romance":22,"Sci-Fi":24};
- const params=new URLSearchParams({limit:"24",order_by:"popularity",sort:"asc"});
- if(term)params.set("q",term);
- else if(currentCategory==="UPCOMING")params.set("status","upcoming");
- else if(currentCategory!=="All"&&currentCategory!=="TRENDING"&&genreIds[currentCategory])params.set("genres",String(genreIds[currentCategory]));
- const response=await fetch("https://api.jikan.moe/v4/anime?"+params.toString(),{headers:{"Accept":"application/json"}});
- if(!response.ok)throw new Error("Jikan API "+response.status);
- const json=await response.json();
- return (json.data||[]).map(x=>({title:{english:x.title_english||x.title,romaji:x.title,native:x.title_japanese},coverImage:{large:x.images&&x.images.webp?x.images.webp.large_image_url:x.images&&x.images.jpg?x.images.jpg.large_image_url:null},genres:(x.genres||[]).map(g=>g.name),seasonYear:x.year||((x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.year)||null),episodes:x.episodes,status:x.status==="Not yet aired"?"NOT_YET_RELEASED":"FINISHED",startDate:{year:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.year,month:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.month,day:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.day},siteUrl:x.url,nextAiringEpisode:null}));
-}
 function renderOfflineList(){const samples=[["Attack on Titan","Action · Drama · Fantasy","2013"],["Demon Slayer","Action · Fantasy","2019"],["Jujutsu Kaisen","Action · Supernatural","2020"],["Naruto: Shippuden","Action · Adventure","2007"],["One Piece","Action · Adventure","1999"],["Death Note","Mystery · Supernatural","2006"],["Fullmetal Alchemist: Brotherhood","Action · Adventure","2009"],["My Hero Academia","Action · School","2016"],["Spy x Family","Comedy · Action","2022"],["Haikyu!!","Sports · Comedy","2014"],["Solo Leveling","Action · Fantasy","2024"],["Frieren: Beyond Journeys End","Adventure · Fantasy","2023"]];const term=search.value.trim().toLowerCase();const list=samples.filter(x=>(currentCategory==="All"||currentCategory==="TRENDING"||currentCategory==="UPCOMING"||x[1].toLowerCase().includes(currentCategory.toLowerCase()))&&(!term||x[0].toLowerCase().includes(term)));render(list.map(x=>({title:{english:x[0]},genres:x[1].split(" · "),seasonYear:x[2],episodes:null,status:"FINISHED",siteUrl:"https://anilist.co/search/anime/"+encodeURIComponent(x[0]),coverImage:null})));statusLine.textContent="Built-in anime list shown. Live AniList data is unavailable; check internet and retry.";}
 async function loadAnime(){
  const id=++requestId,term=search.value.trim();
  let v={page:1,perPage:24,search:term||null,genre:null,sort:["TRENDING_DESC"],status:null};
  if(!term){if(currentCategory==="UPCOMING"){v.sort=["POPULARITY_DESC"];v.status="NOT_YET_RELEASED"}else if(currentCategory==="TRENDING"){v.sort=["TRENDING_DESC"]}else if(currentCategory!=="All"){v.genre=currentCategory;v.sort=["POPULARITY_DESC"]}}
  else v.sort=["SEARCH_MATCH","POPULARITY_DESC"];
- statusLine.textContent=term?"Searching AniList...":"Loading live anime data...";
+ statusLine.textContent=term?"Searching AniList...":"Loading anime from AniList...";
  grid.innerHTML='<div class="empty">LOADING ANIME...</div>';
  try{
-  let res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({query:gql,variables:v})});
-  if(!res.ok)throw Error("API response "+res.status);
-  let data=await res.json();if(id!==requestId)return;if(data.errors)throw Error(data.errors[0].message);
-  const liveItems=data.data&&data.data.Page&&Array.isArray(data.data.Page.media)?data.data.Page.media:[];if(liveItems.length){render(liveItems);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";}else{const backup=await loadJikan(term);if(id!==requestId)return;if(backup.length){render(backup);statusLine.textContent="Anime posters and details loaded from backup source · Jikan."; }else{renderOfflineList();statusLine.textContent="No anime results found from live sources."; }}
- }catch(e){if(id!==requestId)return;try{const backup=await loadJikan(term);if(id!==requestId)return;if(backup.length){render(backup);statusLine.textContent="Anime posters and details loaded from backup source · Jikan.";}else{renderOfflineList();statusLine.textContent="No results found. Showing limited built-in list.";}}catch(backupError){if(id!==requestId)return;renderOfflineList();statusLine.textContent="Live sources unavailable. Showing limited built-in list.";let retry=document.createElement("button");retry.className="cat-btn";retry.textContent="RETRY";retry.style.margin="18px auto";retry.onclick=loadAnime;grid.appendChild(retry)}}
+  const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({query:gql,variables:v})});
+  if(!res.ok)throw Error("AniList API response "+res.status);
+  const data=await res.json();
+  if(id!==requestId)return;
+  if(data.errors)throw Error(data.errors[0].message||"AniList query failed");
+  const items=data.data&&data.data.Page&&Array.isArray(data.data.Page.media)?data.data.Page.media:[];
+  if(items.length){
+   render(items);
+   statusLine.textContent="Live anime data and posters from AniList · Select a poster to open details.";
+  }else{
+   renderOfflineList();
+   statusLine.textContent="AniList returned no results. Showing the limited built-in list.";
+  }
+ }catch(e){
+  if(id!==requestId)return;
+  renderOfflineList();
+  statusLine.textContent="AniList is not responding or the connection is blocked. Check internet and tap RETRY.";
+  const retry=document.createElement("button");
+  retry.className="cat-btn";
+  retry.textContent="RETRY";
+  retry.style.margin="18px auto";
+  retry.onclick=loadAnime;
+  grid.appendChild(retry);
+ }
 }
 function showCategory(c){currentCategory=c;search.value="";title.textContent=c==="All"?"ALL ANIME":c==="UPCOMING"?"UPCOMING ANIME":c==="TRENDING"?"TRENDING ANIME":c.toUpperCase()+" ANIME";document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.category===c));loadAnime()}
 document.querySelectorAll(".cat-btn").forEach(b=>b.addEventListener("click",()=>showCategory(b.dataset.category)));
