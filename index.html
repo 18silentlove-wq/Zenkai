@@ -1,70 +1,37 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08080b"><title>ZENKAI | Anime Universe</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08080b">
+<title>ZENKAI | Anime Universe</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--red:#ff1838;--dark:#08080b;--panel:#141419}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--dark);color:white;font-family:Inter,sans-serif;min-height:100vh}
-header{position:sticky;top:0;z-index:20;background:#09090df2;border-bottom:1px solid #ffffff14;padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;backdrop-filter:blur(15px)}.logo{font:900 25px Orbitron,sans-serif;letter-spacing:3px;cursor:pointer}.logo span{color:var(--red)}.search{background:#ffffff0c;border:1px solid #ffffff20;color:white;padding:11px 15px;border-radius:25px;width:min(330px,58vw);outline:none}.search:focus{border-color:var(--red)}
-.categories{display:flex;gap:10px;padding:17px 5%;overflow-x:auto;background:#0d0d12;border-bottom:1px solid #ffffff12;scrollbar-width:none}.categories::-webkit-scrollbar{display:none}.cat-btn{flex-shrink:0;padding:10px 17px;border:1px solid #ffffff20;border-radius:25px;background:#17171e;color:#aaa;font-size:11px;font-weight:700;cursor:pointer}.cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:0 0 20px #ff183844}
-main{padding:30px 5% 60px}.page-heading{margin-bottom:22px}.eyebrow{color:var(--red);font-size:10px;font-weight:800;letter-spacing:3px;margin-bottom:9px}h1{font:700 clamp(22px,5vw,34px) Orbitron,sans-serif}.count{color:#888;font-size:11px;margin-top:8px}.status{color:#92929d;font-size:11px;margin:0 0 18px;min-height:16px}.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}.card{background:var(--panel);border:1px solid #ffffff12;border-radius:9px;overflow:hidden;transition:.3s;cursor:pointer;min-width:0}.card:hover{transform:translateY(-6px);border-color:#ff183899;box-shadow:0 15px 35px #ff183822}.poster{height:255px;background:#1b1725;overflow:hidden}.poster img{width:100%;height:100%;object-fit:cover;display:block}.poster-fallback{height:100%;display:grid;place-items:center;text-align:center;padding:16px;background:radial-gradient(circle at 30% 20%,#61202d,#19121c 65%,#08080b);font:700 17px Orbitron,sans-serif;color:#fff}.card-info{padding:13px}.card-info h3{font-size:13px;margin-bottom:7px;line-height:1.4}.card-info p{color:#92929d;font-size:10px;line-height:1.55}.tag{display:inline-block;color:#ff6b80;border:1px solid #ff18384a;border-radius:20px;padding:4px 7px;font-size:9px;margin:7px 4px 0 0}.empty{grid-column:1/-1;text-align:center;padding:65px 15px;color:#888;border:1px dashed #ffffff25;border-radius:10px}.empty h2{color:white;font:700 18px Orbitron,sans-serif;margin-bottom:10px}footer{border-top:1px solid #ffffff12;text-align:center;padding:25px;color:#777;font-size:10px;letter-spacing:2px}footer strong{color:var(--red);font-family:Orbitron,sans-serif}
-@media(max-width:1050px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:760px){.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.poster{height:220px}}@media(max-width:520px){header{padding:15px 4%}.logo{font-size:21px}.categories{padding:13px 4%}main{padding:25px 4% 45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.poster{height:190px}.card-info{padding:10px}}
-</style></head><body>
-<header><div class="logo" onclick="showCategory('All')">ZEN<span>KAI</span></div><input class="search" id="search" type="search" placeholder="Search all anime..." aria-label="Search all anime"></header>
-<nav class="categories" aria-label="Anime categories">
-<button class="cat-btn active" data-category="All">ALL ANIME</button><button class="cat-btn" data-category="TRENDING">TRENDING</button><button class="cat-btn" data-category="UPCOMING">UPCOMING</button><button class="cat-btn" data-category="Action">ACTION</button><button class="cat-btn" data-category="Fantasy">FANTASY</button><button class="cat-btn" data-category="Mystery">MYSTERY</button><button class="cat-btn" data-category="Sci-Fi">SCI-FI</button><button class="cat-btn" data-category="Adventure">ADVENTURE</button><button class="cat-btn" data-category="Drama">DRAMA</button><button class="cat-btn" data-category="Romance">ROMANCE</button><button class="cat-btn" data-category="Comedy">COMEDY</button>
-</nav>
-<main><div class="page-heading"><div class="eyebrow">ONE SOURCE · JIKAN</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount">LOADING...</p></div><p class="status" id="status" aria-live="polite">Connecting to AniList...</p><div class="cards" id="animeCards" aria-live="polite"></div></main>
-<footer><strong>ZENKAI</strong><br><br>ANIME DISCOVERY · DATA VIA JIKAN · © 2026</footer>
-<script>
-const API_URL="https://api.jikan.moe/v4/anime";
-const grid=document.getElementById("animeCards"),title=document.getElementById("pageTitle"),count=document.getElementById("resultCount"),statusLine=document.getElementById("status"),search=document.getElementById("search");
-let currentCategory="All",requestId=0,searchTimer;
-const genreIds={"Action":1,"Adventure":2,"Comedy":4,"Drama":8,"Fantasy":10,"Mystery":7,"Romance":22,"Sci-Fi":24};
-function dateText(x){const d=x&&x.aired&&x.aired.prop&&x.aired.prop.from;if(!d||!d.year)return "Date TBA";return [d.day,d.month,d.year].filter(Boolean).join("/")}
-function render(items){
- grid.innerHTML="";count.textContent=items.length+" ANIME FOUND";
- if(!items.length){grid.innerHTML='<div class="empty"><h2>NO ANIME FOUND</h2><p>Try another title or category.</p></div>';return}
- items.forEach(a=>{
-  const name=a.title_english||a.title||a.title_japanese||"Untitled";
-  const card=document.createElement("article");card.className="card";
-  const poster=document.createElement("div");poster.className="poster";
-  const image=a.images&&a.images.webp&&a.images.webp.large_image_url||a.images&&a.images.jpg&&a.images.jpg.large_image_url;
-  if(image){const img=document.createElement("img");img.src=image;img.alt=name+" poster";img.loading="lazy";img.onerror=()=>{poster.innerHTML='<div class="poster-fallback"></div>';poster.firstChild.textContent=name};poster.appendChild(img)}
-  else{const fallback=document.createElement("div");fallback.className="poster-fallback";fallback.textContent=name;poster.appendChild(fallback)}
-  const info=document.createElement("div");info.className="card-info";
-  const h=document.createElement("h3");h.textContent=name;
-  const p=document.createElement("p");p.textContent=(a.status==="Not yet aired"||currentCategory==="UPCOMING")?"Release: "+dateText(a):((a.year||"")+" · "+(a.episodes||"?")+" episodes");
-  info.append(h,p);
-  (a.genres||[]).slice(0,3).forEach(g=>{const t=document.createElement("span");t.className="tag";t.textContent=g.name;info.appendChild(t)});
-  card.append(poster,info);card.addEventListener("click",()=>window.open(a.url,"_blank","noopener"));grid.appendChild(card);
- });
-}
-async function loadAnime(){
- const id=++requestId,term=search.value.trim();
- const params=new URLSearchParams({limit:"24",order_by:currentCategory==="TRENDING"||currentCategory==="All"?"popularity":"popularity",sort:"asc"});
- if(term)params.set("q",term);
- if(currentCategory==="UPCOMING")params.set("status","upcoming");
- else if(genreIds[currentCategory])params.set("genres",String(genreIds[currentCategory]));
- statusLine.textContent=term?"Searching anime...":"Loading anime posters...";
- count.textContent="LOADING...";
- grid.innerHTML='<div class="empty">LOADING ANIME...</div>';
- try{
-  const response=await fetch(API_URL+"?"+params.toString(),{headers:{"Accept":"application/json"}});
-  if(!response.ok)throw new Error("Anime service response "+response.status);
-  const json=await response.json();
-  if(id!==requestId)return;
-  const items=Array.isArray(json.data)?json.data:[];
-  render(items);
-  statusLine.textContent=items.length?"Anime details and posters loaded · Source: Jikan.":"No matching anime found. Try another search.";
- }catch(error){
-  if(id!==requestId)return;
-  grid.innerHTML='<div class="empty"><h2>ANIME NOT LOADING</h2><p>Connection to the anime database failed. Check your internet connection and try again.</p></div>';
-  count.textContent="0 ANIME FOUND";
-  statusLine.textContent="Could not connect to Jikan. Use RETRY after checking your connection.";
-  const retry=document.createElement("button");retry.className="cat-btn";retry.textContent="RETRY";retry.style.margin="18px auto";retry.onclick=loadAnime;grid.appendChild(retry);
- }
-}
-function showCategory(c){currentCategory=c;search.value="";title.textContent=c==="All"?"ALL ANIME":c==="UPCOMING"?"UPCOMING ANIME":c==="TRENDING"?"TRENDING ANIME":c.toUpperCase()+" ANIME";document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.category===c));loadAnime()}
-document.querySelectorAll(".cat-btn").forEach(b=>b.addEventListener("click",()=>showCategory(b.dataset.category)));
-search.addEventListener("input",()=>{clearTimeout(searchTimer);title.textContent="SEARCH RESULTS";searchTimer=setTimeout(loadAnime,600)});
-showCategory("All");
-</script></body></html>
+:root{--red:#ff1838;--dark:#08080b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:var(--dark);color:#fff;font-family:Inter,sans-serif;display:flex;flex-direction:column}
+header{padding:22px 6%;border-bottom:1px solid #ffffff14;background:#09090df2}
+.logo{font:900 26px Orbitron,sans-serif;letter-spacing:3px}.logo span{color:var(--red)}
+main{flex:1;display:grid;place-items:center;padding:40px 20px;text-align:center}
+.content{max-width:620px}
+.eyebrow{color:var(--red);font-size:11px;font-weight:800;letter-spacing:4px;margin-bottom:18px}
+h1{font:700 clamp(28px,7vw,48px) Orbitron,sans-serif;margin-bottom:18px}
+p{color:#a2a2ad;font-size:14px;line-height:1.8}
+.line{width:65px;height:3px;background:var(--red);margin:25px auto;border-radius:4px}
+footer{border-top:1px solid #ffffff14;text-align:center;padding:22px;color:#777;font-size:10px;letter-spacing:2px}
+footer strong{color:var(--red);font-family:Orbitron,sans-serif}
+</style>
+</head>
+<body>
+<header><div class="logo">ZEN<span>KAI</span></div></header>
+<main>
+ <section class="content">
+  <div class="eyebrow">ANIME UNIVERSE</div>
+  <h1>ZENKAI</h1>
+  <div class="line"></div>
+  <p>Anime listings have been removed for now. The ZENKAI project is being redesigned.</p>
+ </section>
+</main>
+<footer><strong>ZENKAI</strong><br><br>ANIME DISCOVERY · © 2026</footer>
+</body>
+</html>
