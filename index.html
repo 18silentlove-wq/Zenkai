@@ -1,131 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#08080b">
-<title>ZENKAI | Anime Universe</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08080b"><title>ZENKAI | Anime Universe</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap');
-:root{--red:#ff1838;--dark:#08080b;--panel:#141419}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--dark);color:white;font-family:Inter,sans-serif;min-height:100vh}
-header{position:sticky;top:0;z-index:20;background:#09090df2;border-bottom:1px solid #ffffff14;padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;backdrop-filter:blur(15px)}
-.logo{font-family:Orbitron,sans-serif;font-size:25px;font-weight:900;letter-spacing:3px;cursor:pointer}
-.logo span{color:var(--red)}
-.search{background:#ffffff0c;border:1px solid #ffffff20;color:white;padding:11px 15px;border-radius:25px;width:190px;outline:none}
-.search:focus{border-color:var(--red)}
-.categories{display:flex;gap:10px;padding:17px 5%;overflow-x:auto;background:#0d0d12;border-bottom:1px solid #ffffff12;scrollbar-width:none}
-.categories::-webkit-scrollbar{display:none}
-.cat-btn{flex-shrink:0;padding:10px 17px;border:1px solid #ffffff20;border-radius:25px;background:#17171e;color:#aaa;font-size:11px;font-weight:700;cursor:pointer;transition:.25s}
-.cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:0 0 20px #ff183844}
-main{padding:30px 5% 60px}
-.page-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
-.eyebrow{color:var(--red);font-size:10px;font-weight:800;letter-spacing:3px;margin-bottom:9px}
-h1{font-family:Orbitron,sans-serif;font-size:clamp(22px,5vw,34px)}
-.count{color:#888;font-size:11px;margin-top:8px}
-.back-btn{background:#ffffff0c;border:1px solid #ffffff25;color:white;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:11px}
-.back-btn:hover{border-color:var(--red);color:var(--red)}
-.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.card{background:var(--panel);border:1px solid #ffffff12;border-radius:9px;overflow:hidden;transition:transform .3s,border .3s,box-shadow .3s;cursor:pointer;transform-style:preserve-3d}
-.card:hover{transform:translateY(-7px);border-color:#ff183899;box-shadow:0 15px 35px #ff183822}
-.poster{height:240px;position:relative;display:flex;align-items:end;padding:16px;overflow:hidden}
-.poster:before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 25%,#08080bf2)}
-.poster span{z-index:1;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:1px}
-.p1{background:radial-gradient(circle at 60% 30%,#ff6878,#74162d 45%,#16080d 90%)}
-.p2{background:radial-gradient(circle at 40% 30%,#9c5cff,#35195f 48%,#09080d 90%)}
-.p3{background:radial-gradient(circle at 60% 30%,#ffad56,#8b341b 45%,#10090b 90%)}
-.p4{background:radial-gradient(circle at 50% 25%,#42a6b8,#173c57 48%,#09080d 90%)}
-.card-info{padding:14px}
-.card-info h3{font-size:14px;margin-bottom:8px}
-.card-info p{color:#85858f;font-size:10px;line-height:1.5}
-.empty{grid-column:1/-1;text-align:center;padding:65px 15px;color:#888;border:1px dashed #ffffff25;border-radius:10px}
-.empty h2{color:white;font-family:Orbitron,sans-serif;font-size:18px;margin-bottom:10px}
-footer{border-top:1px solid #ffffff12;text-align:center;padding:25px;color:#777;font-size:10px;letter-spacing:2px}
-footer strong{color:var(--red);font-family:Orbitron,sans-serif}
-@media(max-width:850px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:600px){header{padding:15px 4%}.logo{font-size:21px}.search{width:125px;font-size:11px}.categories{padding:13px 4%}main{padding:25px 4% 45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.poster{height:190px}.poster span{font-size:11px}.card-info{padding:11px}.card-info h3{font-size:12px}}
-</style>
-</head>
-<body>
-<header>
-  <div class="logo" onclick="showCategory('All')">ZEN<span>KAI</span></div>
-  <input class="search" id="search" type="search" placeholder="Search Anime..." aria-label="Search all anime">
-</header>
-<nav class="categories" id="categories" aria-label="Anime categories">
-  <button class="cat-btn active" data-category="All">ALL ANIME</button>
-  <button class="cat-btn" data-category="Action">ACTION</button>
-  <button class="cat-btn" data-category="Fantasy">FANTASY</button>
-  <button class="cat-btn" data-category="Mystery">MYSTERY</button>
-  <button class="cat-btn" data-category="Sci-Fi">SCI-FI</button>
-  <button class="cat-btn" data-category="Adventure">ADVENTURE</button>
-  <button class="cat-btn" data-category="Drama">DRAMA</button>
-  <button class="cat-btn" data-category="Romance">ROMANCE</button>
-  <button class="cat-btn" data-category="Comedy">COMEDY</button>
-  <button class="cat-btn" data-category="Supernatural">SUPERNATURAL</button>
+:root{--red:#ff1838;--dark:#08080b;--panel:#141419}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--dark);color:white;font-family:Inter,sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:20;background:#09090df2;border-bottom:1px solid #ffffff14;padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;backdrop-filter:blur(15px)}.logo{font:900 25px Orbitron,sans-serif;letter-spacing:3px;cursor:pointer}.logo span{color:var(--red)}.search{background:#ffffff0c;border:1px solid #ffffff20;color:white;padding:11px 15px;border-radius:25px;width:min(330px,58vw);outline:none}.search:focus{border-color:var(--red)}
+.categories{display:flex;gap:10px;padding:17px 5%;overflow-x:auto;background:#0d0d12;border-bottom:1px solid #ffffff12;scrollbar-width:none}.categories::-webkit-scrollbar{display:none}.cat-btn{flex-shrink:0;padding:10px 17px;border:1px solid #ffffff20;border-radius:25px;background:#17171e;color:#aaa;font-size:11px;font-weight:700;cursor:pointer}.cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:0 0 20px #ff183844}
+main{padding:30px 5% 60px}.page-heading{margin-bottom:22px}.eyebrow{color:var(--red);font-size:10px;font-weight:800;letter-spacing:3px;margin-bottom:9px}h1{font:700 clamp(22px,5vw,34px) Orbitron,sans-serif}.count{color:#888;font-size:11px;margin-top:8px}.status{color:#92929d;font-size:11px;margin:0 0 18px;min-height:16px}.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}.card{background:var(--panel);border:1px solid #ffffff12;border-radius:9px;overflow:hidden;transition:.3s;cursor:pointer;min-width:0}.card:hover{transform:translateY(-6px);border-color:#ff183899;box-shadow:0 15px 35px #ff183822}.poster{height:255px;background:#1b1725;overflow:hidden}.poster img{width:100%;height:100%;object-fit:cover;display:block}.card-info{padding:13px}.card-info h3{font-size:13px;margin-bottom:7px;line-height:1.4}.card-info p{color:#92929d;font-size:10px;line-height:1.55}.tag{display:inline-block;color:#ff6b80;border:1px solid #ff18384a;border-radius:20px;padding:4px 7px;font-size:9px;margin:7px 4px 0 0}.empty{grid-column:1/-1;text-align:center;padding:65px 15px;color:#888;border:1px dashed #ffffff25;border-radius:10px}.empty h2{color:white;font:700 18px Orbitron,sans-serif;margin-bottom:10px}footer{border-top:1px solid #ffffff12;text-align:center;padding:25px;color:#777;font-size:10px;letter-spacing:2px}footer strong{color:var(--red);font-family:Orbitron,sans-serif}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:760px){.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.poster{height:220px}}@media(max-width:520px){header{padding:15px 4%}.logo{font-size:21px}.categories{padding:13px 4%}main{padding:25px 4% 45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.poster{height:190px}.card-info{padding:10px}}
+</style></head><body>
+<header><div class="logo" onclick="showCategory('All')">ZEN<span>KAI</span></div><input class="search" id="search" type="search" placeholder="Search all anime..." aria-label="Search all anime"></header>
+<nav class="categories" aria-label="Anime categories">
+<button class="cat-btn active" data-category="All">ALL ANIME</button><button class="cat-btn" data-category="TRENDING">TRENDING</button><button class="cat-btn" data-category="UPCOMING">UPCOMING</button><button class="cat-btn" data-category="Action">ACTION</button><button class="cat-btn" data-category="Fantasy">FANTASY</button><button class="cat-btn" data-category="Mystery">MYSTERY</button><button class="cat-btn" data-category="Sci-Fi">SCI-FI</button><button class="cat-btn" data-category="Adventure">ADVENTURE</button><button class="cat-btn" data-category="Drama">DRAMA</button><button class="cat-btn" data-category="Romance">ROMANCE</button><button class="cat-btn" data-category="Comedy">COMEDY</button>
 </nav>
-<main>
-  <div class="page-heading">
-    <div><div class="eyebrow">WELCOME TO ZENKAI</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount"></p></div>
-    <button class="back-btn" id="homeBtn" onclick="showCategory('All')" style="display:none">← HOME</button>
-  </div>
-  <div class="cards" id="animeCards" aria-live="polite"></div>
-</main>
-<footer><strong>ZENKAI</strong><br><br>ENTER A DIFFERENT DIMENSION · © 2026</footer>
+<main><div class="page-heading"><div class="eyebrow">POWERED BY ANILIST</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount">LOADING...</p></div><p class="status" id="status" aria-live="polite">Connecting to AniList...</p><div class="cards" id="animeCards" aria-live="polite"></div></main>
+<footer><strong>ZENKAI</strong><br><br>ANIME DISCOVERY · DATA VIA ANILIST · © 2026</footer>
 <script>
-const animeList=[
-{name:"Crimson Soul",poster:"CRIMSON SOUL",genre:["Action","Fantasy"],description:"Action · Fantasy · Original Concept",color:"p1"},
-{name:"Shadow Realm",poster:"SHADOW REALM",genre:["Adventure","Mystery","Supernatural"],description:"Adventure · Mystery · Original Concept",color:"p2"},
-{name:"Ember Rise",poster:"EMBER RISE",genre:["Action","Drama"],description:"Action · Drama · Original Concept",color:"p3"},
-{name:"Neon Legacy",poster:"NEON LEGACY",genre:["Sci-Fi","Fantasy"],description:"Sci-Fi · Fantasy · Original Concept",color:"p4"}
-];
-let currentCategory="All";
-const cardsContainer=document.getElementById("animeCards");
-const pageTitle=document.getElementById("pageTitle");
-const resultCount=document.getElementById("resultCount");
-const search=document.getElementById("search");
-const homeBtn=document.getElementById("homeBtn");
-
-function showCategory(category){
-  currentCategory=category;
-  search.value="";
-  pageTitle.textContent=category==="All"?"ALL ANIME":category.toUpperCase()+" ANIME";
-  homeBtn.style.display=category==="All"?"none":"block";
-  document.querySelectorAll(".cat-btn").forEach(btn=>{
-    btn.classList.toggle("active",btn.dataset.category===category);
-  });
-  renderAnime();
+const API_URL="https://graphql.anilist.co";
+const gql="query ($page:Int,$perPage:Int,$search:String,$genre:String,$sort:[MediaSort],$status:MediaStatus) { Page(page:$page,perPage:$perPage) { media(type:ANIME,search:$search,genre:$genre,sort:$sort,status:$status,isAdult:false) { id title { romaji english native } coverImage { large } genres averageScore episodes status seasonYear startDate { year month day } nextAiringEpisode { episode airingAt timeUntilAiring } siteUrl } } }";
+const grid=document.getElementById("animeCards"),title=document.getElementById("pageTitle"),count=document.getElementById("resultCount"),statusLine=document.getElementById("status"),search=document.getElementById("search");
+let currentCategory="All",requestId=0,searchTimer;
+function dateText(d){return d&&d.year?[d.day,d.month,d.year].filter(Boolean).join("/"):"Date TBA"}
+function duration(s){if(!s)return "soon";let d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return d?d+"d "+h+"h":h+"h"}
+function render(items){
+ grid.innerHTML="";count.textContent=items.length+" ANIME FOUND";
+ if(!items.length){grid.innerHTML='<div class="empty"><h2>NO ANIME FOUND</h2><p>Try another title or category.</p></div>';return}
+ items.forEach(a=>{
+  let name=a.title.english||a.title.romaji||a.title.native||"Untitled";
+  let card=document.createElement("article");card.className="card";
+  let poster=document.createElement("div");poster.className="poster";
+  let img=document.createElement("img");img.src=a.coverImage.large;img.alt=name+" poster";img.loading="lazy";img.onerror=()=>{poster.textContent="ZENKAI";poster.style.display="grid";poster.style.placeItems="center"};poster.appendChild(img);
+  let info=document.createElement("div");info.className="card-info";
+  let h=document.createElement("h3");h.textContent=name;
+  let p=document.createElement("p");p.textContent=(currentCategory==="UPCOMING"||a.status==="NOT_YET_RELEASED")?"Release: "+dateText(a.startDate):a.nextAiringEpisode?"Episode "+a.nextAiringEpisode.episode+" in "+duration(a.nextAiringEpisode.timeUntilAiring):(a.seasonYear||"")+" · "+(a.episodes||"?")+" episodes";
+  info.append(h,p);
+  (a.genres||[]).slice(0,3).forEach(g=>{let t=document.createElement("span");t.className="tag";t.textContent=g;info.appendChild(t)});
+  card.append(poster,info);card.addEventListener("click",()=>window.open(a.siteUrl,"_blank","noopener"));grid.appendChild(card);
+ });
 }
-
-function renderAnime(){
-  const searchValue=search.value.toLowerCase().trim();
-  const filtered=animeList.filter(anime=>{
-    // Any search term searches the complete anime list, not only the selected category.
-    const categoryMatch=searchValue!==""||currentCategory==="All"||anime.genre.includes(currentCategory);
-    const searchMatch=anime.name.toLowerCase().includes(searchValue)||
-      anime.genre.join(" ").toLowerCase().includes(searchValue);
-    return categoryMatch&&searchMatch;
-  });
-  resultCount.textContent=filtered.length+" ANIME FOUND";
-  cardsContainer.innerHTML="";
-  if(filtered.length===0){
-    cardsContainer.innerHTML='<div class="empty"><h2>NO ANIME FOUND</h2><p>Try another anime name.</p></div>';
-    return;
-  }
-  filtered.forEach(anime=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML='<div class="poster '+anime.color+'"><span>'+anime.poster+'</span></div>'+
-      '<div class="card-info"><h3>'+anime.name+'</h3><p>'+anime.description+'</p></div>';
-    cardsContainer.appendChild(card);
-  });
+async function loadAnime(){
+ const id=++requestId,term=search.value.trim();
+ let v={page:1,perPage:24,search:term||null,genre:null,sort:["TRENDING_DESC"],status:null};
+ if(!term){if(currentCategory==="UPCOMING"){v.sort=["POPULARITY_DESC"];v.status="NOT_YET_RELEASED"}else if(currentCategory==="TRENDING"){v.sort=["TRENDING_DESC"]}else if(currentCategory!=="All"){v.genre=currentCategory;v.sort=["POPULARITY_DESC"]}}
+ else v.sort=["SEARCH_MATCH","POPULARITY_DESC"];
+ statusLine.textContent=term?"Searching AniList...":"Loading live anime data...";
+ grid.innerHTML='<div class="empty">LOADING ANIME...</div>';
+ try{
+  let res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({query:gql,variables:v})});
+  if(!res.ok)throw Error("API response "+res.status);
+  let data=await res.json();if(id!==requestId)return;if(data.errors)throw Error(data.errors[0].message);
+  render(data.data.Page.media||[]);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";
+ }catch(e){if(id!==requestId)return;count.textContent="DATA UNAVAILABLE";statusLine.textContent="AniList could not be reached. Check your internet and try again.";grid.innerHTML='<div class="empty"><h2>CONNECTION ERROR</h2><p>Anime data is temporarily unavailable.</p><button class="cat-btn" id="retry">TRY AGAIN</button></div>';document.getElementById("retry").addEventListener("click",loadAnime)}
 }
-
-document.querySelectorAll(".cat-btn").forEach(btn=>{
-  btn.addEventListener("click",()=>showCategory(btn.dataset.category));
-});
-search.addEventListener("input",renderAnime);
+function showCategory(c){currentCategory=c;search.value="";title.textContent=c==="All"?"ALL ANIME":c==="UPCOMING"?"UPCOMING ANIME":c==="TRENDING"?"TRENDING ANIME":c.toUpperCase()+" ANIME";document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.category===c));loadAnime()}
+document.querySelectorAll(".cat-btn").forEach(b=>b.addEventListener("click",()=>showCategory(b.dataset.category)));
+search.addEventListener("input",()=>{clearTimeout(searchTimer);title.textContent="SEARCH RESULTS";searchTimer=setTimeout(loadAnime,350)});
 showCategory("All");
-</script>
-</body>
-</html>
+</script></body></html>
