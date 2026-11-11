@@ -1,71 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090b13">
-  <meta name="description" content="ZENKAI — discover your next anime adventure.">
-  <title>ZENKAI — Anime Universe</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08080b">
+<title>ZENKAI | Anime Universe</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{--red:#ff1838;--dark:#08080b;--panel:#141419}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--dark);color:white;font-family:Inter,sans-serif;min-height:100vh}
+header{position:sticky;top:0;z-index:20;background:#09090df2;border-bottom:1px solid #ffffff14;padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;backdrop-filter:blur(15px)}
+.logo{font-family:Orbitron,sans-serif;font-size:25px;font-weight:900;letter-spacing:3px;cursor:pointer}
+.logo span{color:var(--red)}
+.search{background:#ffffff0c;border:1px solid #ffffff20;color:white;padding:11px 15px;border-radius:25px;width:190px;outline:none}
+.search:focus{border-color:var(--red)}
+.categories{display:flex;gap:10px;padding:17px 5%;overflow-x:auto;background:#0d0d12;border-bottom:1px solid #ffffff12;scrollbar-width:none}
+.categories::-webkit-scrollbar{display:none}
+.cat-btn{flex-shrink:0;padding:10px 17px;border:1px solid #ffffff20;border-radius:25px;background:#17171e;color:#aaa;font-size:11px;font-weight:700;cursor:pointer;transition:.25s}
+.cat-btn:hover,.cat-btn.active{background:var(--red);border-color:var(--red);color:white;box-shadow:0 0 20px #ff183844}
+main{padding:30px 5% 60px}
+.page-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
+.eyebrow{color:var(--red);font-size:10px;font-weight:800;letter-spacing:3px;margin-bottom:9px}
+h1{font-family:Orbitron,sans-serif;font-size:clamp(22px,5vw,34px)}
+.count{color:#888;font-size:11px;margin-top:8px}
+.back-btn{background:#ffffff0c;border:1px solid #ffffff25;color:white;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:11px}
+.back-btn:hover{border-color:var(--red);color:var(--red)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid #ffffff12;border-radius:9px;overflow:hidden;transition:transform .3s,border .3s,box-shadow .3s;cursor:pointer;transform-style:preserve-3d}
+.card:hover{transform:translateY(-7px);border-color:#ff183899;box-shadow:0 15px 35px #ff183822}
+.poster{height:240px;position:relative;display:flex;align-items:end;padding:16px;overflow:hidden}
+.poster:before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 25%,#08080bf2)}
+.poster span{z-index:1;font-family:Orbitron,sans-serif;font-size:13px;letter-spacing:1px}
+.p1{background:radial-gradient(circle at 60% 30%,#ff6878,#74162d 45%,#16080d 90%)}
+.p2{background:radial-gradient(circle at 40% 30%,#9c5cff,#35195f 48%,#09080d 90%)}
+.p3{background:radial-gradient(circle at 60% 30%,#ffad56,#8b341b 45%,#10090b 90%)}
+.p4{background:radial-gradient(circle at 50% 25%,#42a6b8,#173c57 48%,#09080d 90%)}
+.card-info{padding:14px}
+.card-info h3{font-size:14px;margin-bottom:8px}
+.card-info p{color:#85858f;font-size:10px;line-height:1.5}
+.empty{grid-column:1/-1;text-align:center;padding:65px 15px;color:#888;border:1px dashed #ffffff25;border-radius:10px}
+.empty h2{color:white;font-family:Orbitron,sans-serif;font-size:18px;margin-bottom:10px}
+footer{border-top:1px solid #ffffff12;text-align:center;padding:25px;color:#777;font-size:10px;letter-spacing:2px}
+footer strong{color:var(--red);font-family:Orbitron,sans-serif}
+@media(max-width:850px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){header{padding:15px 4%}.logo{font-size:21px}.search{width:125px;font-size:11px}.categories{padding:13px 4%}main{padding:25px 4% 45px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.poster{height:190px}.poster span{font-size:11px}.card-info{padding:11px}.card-info h3{font-size:12px}}
+</style>
 </head>
 <body>
-  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="ZENKAI home"><span class="brand-mark">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <button class="nav-link active" data-view="home">Home</button>
-      <button class="nav-link" data-view="explore">Explore</button>
-      <button class="nav-link" data-view="watchlist">My List <span id="listCount" class="count">0</span></button>
-    </nav>
-    <div class="top-actions">
-      <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search anime..." aria-label="Search anime"><kbd>/</kbd></label>
-      <button class="profile-btn" id="profileBtn" aria-label="Profile">Z</button>
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero" id="hero">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="live-dot"></span> YOUR NEXT ADVENTURE STARTS HERE</div>
-        <p class="hero-kicker">FEATURED UNIVERSE · 01</p>
-        <h1>Beyond the<br><span>ordinary.</span></h1>
-        <p class="hero-description">Step into stories that stay with you. Discover new worlds, unforgettable characters and your next favourite anime.</p>
-        <div class="hero-actions"><button class="primary-btn" id="exploreBtn">Explore anime <span>↗</span></button><button class="ghost-btn" id="surpriseBtn">Surprise me ✦</button></div>
-        <div class="hero-meta"><span>✦ Curated discoveries</span><span>◈ Your personal list</span></div>
-      </div>
-      <div class="hero-art" role="img" aria-label="Abstract anime-inspired purple and blue cinematic artwork">
-        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="hero-sigil">界</div><div class="hero-stamp">ZENKAI<br><small>ANIME UNIVERSE</small></div>
-        <div class="hero-art-caption"><span>01 / DISCOVER</span><span>NEW WORLDS AWAIT</span></div>
-      </div>
-    </section>
-
-    <section class="content-section" id="catalog">
-      <div class="section-heading"><div><p class="section-kicker">HANDPICKED FOR YOU</p><h2 id="sectionTitle">Trending now<span>.</span></h2></div><button class="text-btn" id="viewAllBtn">View all <span>→</span></button></div>
-      <div class="filters" id="filters">
-        <button class="filter-chip selected" data-genre="All">All anime</button>
-        <button class="filter-chip" data-genre="Action">Action</button>
-        <button class="filter-chip" data-genre="Adventure">Adventure</button>
-        <button class="filter-chip" data-genre="Fantasy">Fantasy</button>
-        <button class="filter-chip" data-genre="Drama">Drama</button>
-        <button class="filter-chip" data-genre="Sci-Fi">Sci-Fi</button>
-      </div>
-      <div class="anime-grid" id="animeGrid" aria-live="polite"></div>
-      <div class="empty-state hidden" id="emptyState"><div class="empty-icon">⌕</div><h3>No anime found</h3><p>Try another title or choose a different genre.</p><button class="ghost-btn" id="resetBtn">Reset filters</button></div>
-    </section>
-
-    <section class="quote-band"><span class="quote-mark">“</span><p>Every great journey begins with a single episode.</p><span class="quote-label">THE ZENKAI WAY</span></section>
-  </main>
-
-  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a><p>A universe of stories. Made for discovery.</p><span class="footer-note">DEMO EXPERIENCE · 2026</span></footer>
-
-  <div class="modal hidden" id="animeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-backdrop" data-close="true"></div><article class="modal-card"><button class="modal-close" id="modalClose" aria-label="Close">×</button><div class="modal-art" id="modalArt"></div><div class="modal-info"><p class="section-kicker" id="modalMeta">FEATURED ANIME</p><h2 id="modalTitle"></h2><p id="modalDescription"></p><div class="modal-tags" id="modalTags"></div><div class="modal-buttons"><button class="primary-btn" id="modalWatch">▶ Preview details</button><button class="ghost-btn" id="modalSave">＋ Add to list</button></div><p class="demo-note">Preview interface only. No video stream is hosted here.</p></div></article>
+<header>
+  <div class="logo" onclick="showCategory('All')">ZEN<span>KAI</span></div>
+  <input class="search" id="search" type="search" placeholder="Search Anime..." aria-label="Search all anime">
+</header>
+<nav class="categories" id="categories" aria-label="Anime categories">
+  <button class="cat-btn active" data-category="All">ALL ANIME</button>
+  <button class="cat-btn" data-category="Action">ACTION</button>
+  <button class="cat-btn" data-category="Fantasy">FANTASY</button>
+  <button class="cat-btn" data-category="Mystery">MYSTERY</button>
+  <button class="cat-btn" data-category="Sci-Fi">SCI-FI</button>
+  <button class="cat-btn" data-category="Adventure">ADVENTURE</button>
+  <button class="cat-btn" data-category="Drama">DRAMA</button>
+  <button class="cat-btn" data-category="Romance">ROMANCE</button>
+  <button class="cat-btn" data-category="Comedy">COMEDY</button>
+  <button class="cat-btn" data-category="Supernatural">SUPERNATURAL</button>
+</nav>
+<main>
+  <div class="page-heading">
+    <div><div class="eyebrow">WELCOME TO ZENKAI</div><h1 id="pageTitle">ALL ANIME</h1><p class="count" id="resultCount"></p></div>
+    <button class="back-btn" id="homeBtn" onclick="showCategory('All')" style="display:none">← HOME</button>
   </div>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="script.js"></script>
+  <div class="cards" id="animeCards" aria-live="polite"></div>
+</main>
+<footer><strong>ZENKAI</strong><br><br>ENTER A DIFFERENT DIMENSION · © 2026</footer>
+<script>
+const animeList=[
+{name:"Crimson Soul",poster:"CRIMSON SOUL",genre:["Action","Fantasy"],description:"Action · Fantasy · Original Concept",color:"p1"},
+{name:"Shadow Realm",poster:"SHADOW REALM",genre:["Adventure","Mystery","Supernatural"],description:"Adventure · Mystery · Original Concept",color:"p2"},
+{name:"Ember Rise",poster:"EMBER RISE",genre:["Action","Drama"],description:"Action · Drama · Original Concept",color:"p3"},
+{name:"Neon Legacy",poster:"NEON LEGACY",genre:["Sci-Fi","Fantasy"],description:"Sci-Fi · Fantasy · Original Concept",color:"p4"}
+];
+let currentCategory="All";
+const cardsContainer=document.getElementById("animeCards");
+const pageTitle=document.getElementById("pageTitle");
+const resultCount=document.getElementById("resultCount");
+const search=document.getElementById("search");
+const homeBtn=document.getElementById("homeBtn");
+
+function showCategory(category){
+  currentCategory=category;
+  search.value="";
+  pageTitle.textContent=category==="All"?"ALL ANIME":category.toUpperCase()+" ANIME";
+  homeBtn.style.display=category==="All"?"none":"block";
+  document.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.category===category);
+  });
+  renderAnime();
+}
+
+function renderAnime(){
+  const searchValue=search.value.toLowerCase().trim();
+  const filtered=animeList.filter(anime=>{
+    // Any search term searches the complete anime list, not only the selected category.
+    const categoryMatch=searchValue!==""||currentCategory==="All"||anime.genre.includes(currentCategory);
+    const searchMatch=anime.name.toLowerCase().includes(searchValue)||
+      anime.genre.join(" ").toLowerCase().includes(searchValue);
+    return categoryMatch&&searchMatch;
+  });
+  resultCount.textContent=filtered.length+" ANIME FOUND";
+  cardsContainer.innerHTML="";
+  if(filtered.length===0){
+    cardsContainer.innerHTML='<div class="empty"><h2>NO ANIME FOUND</h2><p>Try another anime name.</p></div>';
+    return;
+  }
+  filtered.forEach(anime=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML='<div class="poster '+anime.color+'"><span>'+anime.poster+'</span></div>'+
+      '<div class="card-info"><h3>'+anime.name+'</h3><p>'+anime.description+'</p></div>';
+    cardsContainer.appendChild(card);
+  });
+}
+
+document.querySelectorAll(".cat-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>showCategory(btn.dataset.category));
+});
+search.addEventListener("input",renderAnime);
+showCategory("All");
+</script>
 </body>
 </html>
