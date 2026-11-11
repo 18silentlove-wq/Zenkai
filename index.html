@@ -49,7 +49,7 @@ async function loadAnime(){
   let res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({query:gql,variables:v})});
   if(!res.ok)throw Error("API response "+res.status);
   let data=await res.json();if(id!==requestId)return;if(data.errors)throw Error(data.errors[0].message);
-  render(data.data.Page.media||[]);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";
+  const liveItems=data.data&&data.data.Page&&Array.isArray(data.data.Page.media)?data.data.Page.media:[];if(liveItems.length){render(liveItems);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";}else{renderOfflineList();statusLine.textContent="No live results returned. Showing the built-in list for this category."; }
  }catch(e){if(id!==requestId)return;renderOfflineList();let retry=document.createElement("button");retry.className="cat-btn";retry.textContent="RETRY LIVE DATA";retry.style.margin="18px auto";retry.onclick=loadAnime;grid.appendChild(retry)}
 }
 function showCategory(c){currentCategory=c;search.value="";title.textContent=c==="All"?"ALL ANIME":c==="UPCOMING"?"UPCOMING ANIME":c==="TRENDING"?"TRENDING ANIME":c.toUpperCase()+" ANIME";document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.category===c));loadAnime()}
