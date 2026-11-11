@@ -37,6 +37,17 @@ function render(items){
   card.append(poster,info);card.addEventListener("click",()=>window.open(a.siteUrl,"_blank","noopener"));grid.appendChild(card);
  });
 }
+async function loadJikan(term){
+ const genreIds={"Action":1,"Adventure":2,"Comedy":4,"Drama":8,"Fantasy":10,"Mystery":7,"Romance":22,"Sci-Fi":24};
+ const params=new URLSearchParams({limit:"24",order_by:"popularity",sort:"asc"});
+ if(term)params.set("q",term);
+ else if(currentCategory==="UPCOMING")params.set("status","upcoming");
+ else if(currentCategory!=="All"&&currentCategory!=="TRENDING"&&genreIds[currentCategory])params.set("genres",String(genreIds[currentCategory]));
+ const response=await fetch("https://api.jikan.moe/v4/anime?"+params.toString(),{headers:{"Accept":"application/json"}});
+ if(!response.ok)throw new Error("Jikan API "+response.status);
+ const json=await response.json();
+ return (json.data||[]).map(x=>({title:{english:x.title_english||x.title,romaji:x.title,native:x.title_japanese},coverImage:{large:x.images&&x.images.webp?x.images.webp.large_image_url:x.images&&x.images.jpg?x.images.jpg.large_image_url:null},genres:(x.genres||[]).map(g=>g.name),seasonYear:x.year||((x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.year)||null),episodes:x.episodes,status:x.status==="Not yet aired"?"NOT_YET_RELEASED":"FINISHED",startDate:{year:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.year,month:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.month,day:x.aired&&x.aired.prop&&x.aired.prop.from&&x.aired.prop.from.day},siteUrl:x.url,nextAiringEpisode:null}));
+}
 function renderOfflineList(){const samples=[["Attack on Titan","Action · Drama · Fantasy","2013"],["Demon Slayer","Action · Fantasy","2019"],["Jujutsu Kaisen","Action · Supernatural","2020"],["Naruto: Shippuden","Action · Adventure","2007"],["One Piece","Action · Adventure","1999"],["Death Note","Mystery · Supernatural","2006"],["Fullmetal Alchemist: Brotherhood","Action · Adventure","2009"],["My Hero Academia","Action · School","2016"],["Spy x Family","Comedy · Action","2022"],["Haikyu!!","Sports · Comedy","2014"],["Solo Leveling","Action · Fantasy","2024"],["Frieren: Beyond Journeys End","Adventure · Fantasy","2023"]];const term=search.value.trim().toLowerCase();const list=samples.filter(x=>(currentCategory==="All"||currentCategory==="TRENDING"||currentCategory==="UPCOMING"||x[1].toLowerCase().includes(currentCategory.toLowerCase()))&&(!term||x[0].toLowerCase().includes(term)));render(list.map(x=>({title:{english:x[0]},genres:x[1].split(" · "),seasonYear:x[2],episodes:null,status:"FINISHED",siteUrl:"https://anilist.co/search/anime/"+encodeURIComponent(x[0]),coverImage:null})));statusLine.textContent="Built-in anime list shown. Live AniList data is unavailable; check internet and retry.";}
 async function loadAnime(){
  const id=++requestId,term=search.value.trim();
@@ -49,8 +60,8 @@ async function loadAnime(){
   let res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({query:gql,variables:v})});
   if(!res.ok)throw Error("API response "+res.status);
   let data=await res.json();if(id!==requestId)return;if(data.errors)throw Error(data.errors[0].message);
-  const liveItems=data.data&&data.data.Page&&Array.isArray(data.data.Page.media)?data.data.Page.media:[];if(liveItems.length){render(liveItems);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";}else{renderOfflineList();statusLine.textContent="No live results returned. Showing the built-in list for this category."; }
- }catch(e){if(id!==requestId)return;renderOfflineList();let retry=document.createElement("button");retry.className="cat-btn";retry.textContent="RETRY LIVE DATA";retry.style.margin="18px auto";retry.onclick=loadAnime;grid.appendChild(retry)}
+  const liveItems=data.data&&data.data.Page&&Array.isArray(data.data.Page.media)?data.data.Page.media:[];if(liveItems.length){render(liveItems);statusLine.textContent="Live anime data from AniList · Select a poster to open full details.";}else{const backup=await loadJikan(term);if(id!==requestId)return;if(backup.length){render(backup);statusLine.textContent="Anime posters and details loaded from backup source · Jikan."; }else{renderOfflineList();statusLine.textContent="No anime results found from live sources."; }}
+ }catch(e){if(id!==requestId)return;try{const backup=await loadJikan(term);if(id!==requestId)return;if(backup.length){render(backup);statusLine.textContent="Anime posters and details loaded from backup source · Jikan.";}else{renderOfflineList();statusLine.textContent="No results found. Showing limited built-in list.";}}catch(backupError){if(id!==requestId)return;renderOfflineList();statusLine.textContent="Live sources unavailable. Showing limited built-in list.";let retry=document.createElement("button");retry.className="cat-btn";retry.textContent="RETRY";retry.style.margin="18px auto";retry.onclick=loadAnime;grid.appendChild(retry)}}
 }
 function showCategory(c){currentCategory=c;search.value="";title.textContent=c==="All"?"ALL ANIME":c==="UPCOMING"?"UPCOMING ANIME":c==="TRENDING"?"TRENDING ANIME":c.toUpperCase()+" ANIME";document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("active",b.dataset.category===c));loadAnime()}
 document.querySelectorAll(".cat-btn").forEach(b=>b.addEventListener("click",()=>showCategory(b.dataset.category)));
