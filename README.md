@@ -1,23 +1,17 @@
-# ZENKAI — Logic Lab
+# ZENKAI — Math Arena
 
-ZENKAI is a lightweight, mobile-friendly **Mastermind-style code-breaking game**.
+A mobile-first maths puzzle game interface, currently in the UI-preview stage.
 
-## Play
-Open [index.html](./index.html) in a browser. No account, server, or installation is required.
+## Current UI
+- Addition (+) and subtraction (−) modes
+- 10-second and 20-second timer choices
+- Four multiple-choice answer buttons
+- Responsive layout for phones and desktop
+- Help dialog and selectable UI controls
 
-## Rules
-- Crack a hidden sequence of four different colours.
-- Choose four colours from the palette and submit a guess.
-- Bright feedback markers show correct colours in the correct slots.
-- Hollow feedback markers show correct colours in the wrong slots.
-- Solve the code within ten attempts.
+## Project files
+- `index.html` — interface
+- `style.css` — responsive design
+- `script.js` — UI interactions (gameplay logic is not implemented yet)
 
-## Skills
-The game is designed to practise logical thinking, pattern recognition, deductive reasoning, problem solving, and strategic thinking.
-
-## Files
-- `index.html` — game interface
-- `style.css` — responsive visual design
-- `script.js` — game rules and interactions
-
-The game runs locally in the browser.
+Next step: implement timed rounds, random questions, answer checking, score, and progression.
