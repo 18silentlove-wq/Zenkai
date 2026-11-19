@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101426">
+  <meta name="description" content="ZENKAI — an offline code-breaking logic puzzle.">
+  <title>ZENKAI — Logic Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="glow glow-a"></div><div class="glow glow-b"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Zenkai home"><span class="brand-icon">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a>
+    <div class="top-tag"><span class="live-dot"></span> OFFLINE LOGIC LAB</div>
+    <button class="icon-button" id="helpButton" aria-label="How to play">?</button>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <p class="eyebrow">THINK · DECODE · CONQUER</p>
+      <h1>Crack the <span>Code.</span></h1>
+      <p class="intro-copy">A secret sequence is hidden. Use logic, pattern recognition and smart guesses to solve it.</p>
+      <div class="stats">
+        <div class="stat"><span class="stat-value" id="attemptsStat">0/10</span><span class="stat-label">ATTEMPTS</span></div>
+        <div class="stat"><span class="stat-value" id="bestStat">—</span><span class="stat-label">BEST SOLVE</span></div>
+        <div class="stat"><span class="stat-value" id="streakStat">0</span><span class="stat-label">WIN STREAK</span></div>
+      </div>
+    </section>
+
+    <section class="game-card" aria-label="Mastermind code breaking game">
+      <div class="game-heading">
+        <div><p class="eyebrow">MISSION 001</p><h2>Code Breaker</h2></div>
+        <span class="difficulty">CLASSIC <b>•</b> 4 SLOTS</span>
+      </div>
+      <div class="secret-panel">
+        <div><span class="secret-label">HIDDEN CODE</span><span class="secret-hint" id="secretHint">Crack the 4-colour sequence</span></div>
+        <div class="secret-slots" id="secretSlots" aria-label="Four hidden code slots">
+          <span class="secret-slot">?</span><span class="secret-slot">?</span><span class="secret-slot">?</span><span class="secret-slot">?</span>
+        </div>
+      </div>
+
+      <div class="board-head"><span>YOUR GUESSES</span><span>FEEDBACK</span></div>
+      <div class="history" id="history" aria-live="polite">
+        <div class="empty-state" id="emptyState"><span class="empty-symbol">⌁</span><span>Your attempts will appear here.</span><small>Choose four different colours below.</small></div>
+      </div>
+
+      <div class="composer">
+        <div class="composer-top"><div><span class="section-label">BUILD YOUR GUESS</span><p id="selectionText">Select 4 colours · 0/4</p></div><button class="text-button" id="clearButton">CLEAR</button></div>
+        <div class="palette" id="palette" aria-label="Choose a colour">
+          <button class="color-choice c-coral" data-color="coral" aria-label="Coral"></button>
+          <button class="color-choice c-cyan" data-color="cyan" aria-label="Cyan"></button>
+          <button class="color-choice c-violet" data-color="violet" aria-label="Violet"></button>
+          <button class="color-choice c-lime" data-color="lime" aria-label="Lime"></button>
+          <button class="color-choice c-amber" data-color="amber" aria-label="Amber"></button>
+          <button class="color-choice c-blue" data-color="blue" aria-label="Blue"></button>
+        </div>
+        <div class="selected-slots" id="selectedSlots">
+          <button class="selected-slot" data-slot="0" aria-label="Empty slot 1">+</button>
+          <button class="selected-slot" data-slot="1" aria-label="Empty slot 2">+</button>
+          <button class="selected-slot" data-slot="2" aria-label="Empty slot 3">+</button>
+          <button class="selected-slot" data-slot="3" aria-label="Empty slot 4">+</button>
+        </div>
+        <button class="submit-button" id="submitButton" disabled>SUBMIT GUESS <span>→</span></button>
+      </div>
+      <div class="game-footer"><span><i></i> LOCAL GAME · NO ACCOUNT NEEDED</span><button id="newGameButton">↻ NEW GAME</button></div>
+    </section>
+    <aside class="side-note">
+      <div class="note-icon">✳</div><h3>Read the clues.</h3>
+      <p>Every guess gives feedback. Use it to eliminate possibilities and narrow down the hidden sequence.</p>
+      <div class="legend">
+        <div><span class="feedback-dot exact"></span><p><b>Exact match</b><small>Right colour, right slot.</small></p></div>
+        <div><span class="feedback-dot close"></span><p><b>Colour match</b><small>Right colour, wrong slot.</small></p></div>
+        <div><span class="feedback-dot miss"></span><p><b>No match</b><small>Not part of the code.</small></p></div>
+      </div>
+    </aside>
+  </main>
+
+  <dialog id="helpDialog" class="help-dialog">
+    <button class="dialog-close" id="closeHelp" aria-label="Close">×</button>
+    <p class="eyebrow">THE RULES</p><h2>How to play</h2>
+    <ol>
+      <li>Find the hidden sequence of <b>4 different colours</b>.</li>
+      <li>Tap colours to fill the four guess slots. Tap a filled slot to remove it.</li>
+      <li>Submit your guess to receive feedback.</li>
+      <li><b>Bright marker:</b> correct colour in the correct position.</li>
+      <li><b>Hollow marker:</b> correct colour, but in the wrong position.</li>
+      <li>Solve the code in 10 attempts or fewer to win.</li>
+    </ol>
+    <button class="submit-button" id="gotItButton">GOT IT</button>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
