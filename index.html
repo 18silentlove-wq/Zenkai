@@ -1,98 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101426">
-  <meta name="description" content="ZENKAI — an offline code-breaking logic puzzle.">
-  <title>ZENKAI — Logic Lab</title>
+  <meta name="description" content="ZENKAI Math Arena — quick maths puzzle game.">
+  <title>ZENKAI — Math Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="glow glow-a"></div><div class="glow glow-b"></div>
+  <div class="orb orb-one"></div><div class="orb orb-two"></div>
   <header class="topbar">
-    <a class="brand" href="#" aria-label="Zenkai home"><span class="brand-icon">Z</span><span>ZENKAI<span class="brand-dot">.</span></span></a>
-    <div class="top-tag"><span class="live-dot"></span> OFFLINE LOGIC LAB</div>
-    <button class="icon-button" id="helpButton" aria-label="How to play">?</button>
+    <a class="brand" href="#" aria-label="Zenkai Math Arena home"><span class="brand-mark">Z</span><span>ZENKAI<span class="brand-accent">.</span></span></a>
+    <div class="top-center"><span class="status-dot"></span> MATH ARENA</div>
+    <button class="help-btn" id="helpBtn" aria-label="How to play">?</button>
   </header>
 
-  <main class="layout">
-    <section class="intro">
-      <p class="eyebrow">THINK · DECODE · CONQUER</p>
-      <h1>Crack the <span>Code.</span></h1>
-      <p class="intro-copy">A secret sequence is hidden. Use logic, pattern recognition and smart guesses to solve it.</p>
-      <div class="stats">
-        <div class="stat"><span class="stat-value" id="attemptsStat">0/10</span><span class="stat-label">ATTEMPTS</span></div>
-        <div class="stat"><span class="stat-value" id="bestStat">—</span><span class="stat-label">BEST SOLVE</span></div>
-        <div class="stat"><span class="stat-value" id="streakStat">0</span><span class="stat-label">WIN STREAK</span></div>
+  <main class="page">
+    <section class="welcome">
+      <div class="welcome-copy">
+        <p class="kicker">THINK FAST. PLAY SMART.</p>
+        <h1>दिमाग लगाओ,<br><span>जवाब बताओ!</span></h1>
+        <p class="subcopy">छोटे-छोटे सवाल, चार जवाब और समय की चुनौती। देखते हैं कितनी तेज़ है तुम्हारी सोच!</p>
       </div>
+      <div class="streak-card"><span class="streak-icon">✦</span><div><strong>READY?</strong><small>आज का चैलेंज</small></div></div>
     </section>
 
-    <section class="game-card" aria-label="Mastermind code breaking game">
-      <div class="game-heading">
-        <div><p class="eyebrow">MISSION 001</p><h2>Code Breaker</h2></div>
-        <span class="difficulty">CLASSIC <b>•</b> 4 SLOTS</span>
+    <section class="game-shell">
+      <div class="game-topline">
+        <div><span class="section-kicker">GAME SETUP</span><h2>अपना राउंड चुनो</h2></div>
+        <span class="preview-tag">UI PREVIEW</span>
       </div>
-      <div class="secret-panel">
-        <div><span class="secret-label">HIDDEN CODE</span><span class="secret-hint" id="secretHint">Crack the 4-colour sequence</span></div>
-        <div class="secret-slots" id="secretSlots" aria-label="Four hidden code slots">
-          <span class="secret-slot">?</span><span class="secret-slot">?</span><span class="secret-slot">?</span><span class="secret-slot">?</span>
+
+      <div class="setup-grid">
+        <div class="setup-block">
+          <span class="field-label">किस तरह के सवाल?</span>
+          <div class="choice-group operation-group" role="group" aria-label="Math operation">
+            <button class="setup-choice active" data-operation="plus"><span class="choice-symbol plus">＋</span><span>जोड़</span></button>
+            <button class="setup-choice" data-operation="minus"><span class="choice-symbol minus">−</span><span>घटाव</span></button>
+          </div>
+        </div>
+        <div class="setup-block">
+          <span class="field-label">कितना समय मिलेगा?</span>
+          <div class="choice-group time-group" role="group" aria-label="Time limit">
+            <button class="time-choice" data-time="10"><strong>10</strong><small>सेकंड</small></button>
+            <button class="time-choice active" data-time="20"><strong>20</strong><small>सेकंड</small></button>
+          </div>
         </div>
       </div>
 
-      <div class="board-head"><span>YOUR GUESSES</span><span>FEEDBACK</span></div>
-      <div class="history" id="history" aria-live="polite">
-        <div class="empty-state" id="emptyState"><span class="empty-symbol">⌁</span><span>Your attempts will appear here.</span><small>Choose four different colours below.</small></div>
-      </div>
+      <div class="divider"></div>
 
-      <div class="composer">
-        <div class="composer-top"><div><span class="section-label">BUILD YOUR GUESS</span><p id="selectionText">Select 4 colours · 0/4</p></div><button class="text-button" id="clearButton">CLEAR</button></div>
-        <div class="palette" id="palette" aria-label="Choose a colour">
-          <button class="color-choice c-coral" data-color="coral" aria-label="Coral"></button>
-          <button class="color-choice c-cyan" data-color="cyan" aria-label="Cyan"></button>
-          <button class="color-choice c-violet" data-color="violet" aria-label="Violet"></button>
-          <button class="color-choice c-lime" data-color="lime" aria-label="Lime"></button>
-          <button class="color-choice c-amber" data-color="amber" aria-label="Amber"></button>
-          <button class="color-choice c-blue" data-color="blue" aria-label="Blue"></button>
+      <section class="question-area" aria-label="Sample maths question">
+        <div class="question-meta">
+          <span class="question-number"><i></i> सवाल <b>01</b></span>
+          <span class="timer-pill"><span class="timer-icon">◷</span><b id="timerValue">20</b> सेकंड</span>
         </div>
-        <div class="selected-slots" id="selectedSlots">
-          <button class="selected-slot" data-slot="0" aria-label="Empty slot 1">+</button>
-          <button class="selected-slot" data-slot="1" aria-label="Empty slot 2">+</button>
-          <button class="selected-slot" data-slot="2" aria-label="Empty slot 3">+</button>
-          <button class="selected-slot" data-slot="3" aria-label="Empty slot 4">+</button>
+        <div class="question-card">
+          <span class="question-caption">सही जवाब चुनो</span>
+          <div class="equation" id="equation"><span>12</span><i>＋</i><span>8</span><b>=</b><strong>?</strong></div>
+          <div class="question-decoration">✳</div>
         </div>
-        <button class="submit-button" id="submitButton" disabled>SUBMIT GUESS <span>→</span></button>
-      </div>
-      <div class="game-footer"><span><i></i> LOCAL GAME · NO ACCOUNT NEEDED</span><button id="newGameButton">↻ NEW GAME</button></div>
+
+        <div class="answers-heading"><span>तुम्हारा जवाब</span><small>एक विकल्प चुनें</small></div>
+        <div class="answers-grid" role="group" aria-label="Answer options">
+          <button class="answer-option"><span class="option-letter">A</span><strong>18</strong></button>
+          <button class="answer-option"><span class="option-letter">B</span><strong>20</strong></button>
+          <button class="answer-option"><span class="option-letter">C</span><strong>21</strong></button>
+          <button class="answer-option"><span class="option-letter">D</span><strong>22</strong></button>
+        </div>
+        <button class="lock-answer" id="lockAnswer" disabled>जवाब चुनो <span>→</span></button>
+      </section>
+      <div class="game-bottom"><span><i></i> PRACTICE YOUR BRAIN</span><span>जोड़ • घटाव</span></div>
     </section>
-    <aside class="side-note">
-      <div class="note-icon">✳</div><h3>Read the clues.</h3>
-      <p>Every guess gives feedback. Use it to eliminate possibilities and narrow down the hidden sequence.</p>
-      <div class="legend">
-        <div><span class="feedback-dot exact"></span><p><b>Exact match</b><small>Right colour, right slot.</small></p></div>
-        <div><span class="feedback-dot close"></span><p><b>Colour match</b><small>Right colour, wrong slot.</small></p></div>
-        <div><span class="feedback-dot miss"></span><p><b>No match</b><small>Not part of the code.</small></p></div>
-      </div>
-    </aside>
+
+    <section class="features">
+      <div class="feature"><span class="feature-icon purple">＋</span><div><b>जोड़</b><small>तेज़ गणना की प्रैक्टिस</small></div></div>
+      <div class="feature"><span class="feature-icon orange">−</span><div><b>घटाव</b><small>दिमाग की सही कसरत</small></div></div>
+      <div class="feature"><span class="feature-icon green">◷</span><div><b>टाइम चैलेंज</b><small>10 या 20 सेकंड</small></div></div>
+    </section>
+    <p class="footer-note">ZENKAI MATH ARENA <span>•</span> PLAY. LEARN. LEVEL UP.</p>
   </main>
 
   <dialog id="helpDialog" class="help-dialog">
     <button class="dialog-close" id="closeHelp" aria-label="Close">×</button>
-    <p class="eyebrow">THE RULES</p><h2>How to play</h2>
-    <ol>
-      <li>Find the hidden sequence of <b>4 different colours</b>.</li>
-      <li>Tap colours to fill the four guess slots. Tap a filled slot to remove it.</li>
-      <li>Submit your guess to receive feedback.</li>
-      <li><b>Bright marker:</b> correct colour in the correct position.</li>
-      <li><b>Hollow marker:</b> correct colour, but in the wrong position.</li>
-      <li>Solve the code in 10 attempts or fewer to win.</li>
-    </ol>
-    <button class="submit-button" id="gotItButton">GOT IT</button>
+    <p class="kicker">HOW TO PLAY</p><h2>गेम कैसे खेलना है?</h2>
+    <ul><li>जोड़ या घटाव का मोड चुनो।</li><li>10 या 20 सेकंड का टाइम चुनो।</li><li>सवाल का सही जवाब चार विकल्पों में से चुनो।</li><li>समय खत्म होने से पहले जवाब देना है।</li></ul>
+    <button class="lock-answer dialog-ok" id="gotIt">समझ गया</button>
   </dialog>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status"></div>
   <script src="script.js"></script>
 </body>
 </html>
